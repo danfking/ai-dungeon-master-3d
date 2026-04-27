@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromatic Resonance - A Watercolor Dungeon</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Three.js Canvas Container -->
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- HUD Overlay -->
+        <div id="hud">
+            <!-- Top Bar: Enemy Info -->
+            <div id="enemy-info" class="hud-panel hidden">
+                <div id="enemy-name"></div>
+                <div id="enemy-hp-bar">
+                    <div id="enemy-hp-fill"></div>
+                </div>
+            </div>
+
+            <!-- Center: Turn Indicator & Messages -->
+            <div id="message-area">
+                <div id="turn-indicator" class="hidden">Your Turn</div>
+                <div id="combat-messages"></div>
+            </div>
+
+            <!-- Navigation Panel -->
+            <div id="navigation-panel" class="hud-panel">
+                <div id="room-name">Crypt Entrance</div>
+                <div id="nav-buttons">
+                    <button class="nav-btn" id="btn-back" disabled>
+                        <span class="nav-icon">←</span>
+                        <span class="nav-label">Back</span>
+                    </button>
+                    <button class="nav-btn" id="btn-forward">
+                        <span class="nav-icon">→</span>
+                        <span class="nav-label">Forward</span>
+                    </button>
+                </div>
+                <div id="room-hint">Extract colors to power your spells</div>
+            </div>
+
+            <!-- Bottom: Player Stats & Actions -->
+            <div id="bottom-hud">
+                <!-- Player Stats -->
+                <div id="player-stats" class="hud-panel">
+                    <div class="stat-bar">
+                        <span class="stat-label">HP</span>
+                        <div id="hp-bar">
+                            <div id="hp-fill"></div>
+                        </div>
+                        <span id="hp-text">50/50</span>
+                    </div>
+                    <div class="stat-bar">
+                        <span class="stat-label">MP</span>
+                        <div id="mana-bar">
+                            <div id="mana-fill"></div>
+                        </div>
+                        <span id="mana-text">20/20</span>
+                    </div>
+                    <div id="xp-bar-container" class="stat-bar">
+                        <span class="stat-label">XP</span>
+                        <div id="xp-bar-outer">
+                            <div id="xp-bar"></div>
+                        </div>
+                        <span id="xp-text">Lv.1</span>
+                    </div>
+                </div>
+
+                <!-- Action Bar -->
+                <div id="action-bar" class="hud-panel">
+                    <button class="action-btn" id="btn-attack" data-action="attack">
+                        <span class="shortcut-hint">1</span>
+                        <span class="action-icon">⚔</span>
+                        <span class="action-name">Attack</span>
+                    </button>
+                    <button class="action-btn" id="btn-arcane" data-action="arcane" data-cost="5">
+                        <span class="shortcut-hint">2</span>
+                        <span class="action-icon">✧</span>
+                        <span class="action-name">Arcane Bolt</span>
+                        <span class="action-cost">5 MP</span>
+                    </button>
+                    <button class="action-btn" id="btn-heal" data-action="heal" data-cost="5">
+                        <span class="shortcut-hint">3</span>
+                        <span class="action-icon">❤</span>
+                        <span class="action-name">Heal</span>
+                        <span class="action-cost">5 MP</span>
+                    </button>
+                    <button class="action-btn" id="btn-flee" data-action="flee">
+                        <span class="shortcut-hint">4</span>
+                        <span class="action-icon">🏃</span>
+                        <span class="action-name">Flee</span>
+                    </button>
+                </div>
+
+                <!-- Gold Display -->
+                <div id="gold-display" class="hud-panel">
+                    <span class="gold-icon">💰</span>
+                    <span id="gold-amount">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen">
+            <div class="loading-content">
+                <h1>AI Dungeon Master 3D</h1>
+                <p class="subtitle">Watercolor Edition</p>
+                <div class="loading-bar">
+                    <div id="loading-progress"></div>
+                </div>
+                <p id="loading-text">Loading assets...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Three.js from CDN for development -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <!-- Game Logic (ported from ai-dungeon-master) -->
+    <script src="js/logic/data.js"></script>
+    <script src="js/logic/stats.js"></script>
+    <script src="js/logic/inventory.js"></script>
+    <script src="js/logic/combat.js"></script>
+
+    <!-- Color Extraction System (Chromatic Resonance) -->
+    <script src="js/systems/color-system.js"></script>
+    <script src="js/systems/progression.js"></script>
+    <script src="js/ui/color-inventory.js"></script>
+    <script src="js/ui/painters-palette.js"></script>
+    <script src="js/ui/inventory-panel.js"></script>
+    <script src="js/ui/system-notifications.js"></script>
+
+    <!-- Three.js Modules -->
+    <script type="module" src="js/three/scene-manager.js"></script>
+    <script type="module" src="js/three/room-renderer.js"></script>
+    <script type="module" src="js/three/enemy-sprite.js"></script>
+    <script type="module" src="js/three/particle-system.js"></script>
+    <script type="module" src="js/three/post-processing.js"></script>
+
+    <!-- HUD Controller -->
+    <script type="module" src="js/hud.js"></script>
+
+    <!-- Main Entry Point -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

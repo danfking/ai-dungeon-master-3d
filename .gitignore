@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Electron build artifacts
+out/
+release/
+
+# Agent / art pipeline working files (huge, contains nested .git, env)
+.agents/
+
+# Top-level exploratory art (not used by game; game uses game/assets/ instead)
+/assets/
+
+# Environment
+.env
+.env.local
+
+# Empty Windows artefacts
+nul
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test artefacts
+test-screenshots/
+.playwright-mcp/

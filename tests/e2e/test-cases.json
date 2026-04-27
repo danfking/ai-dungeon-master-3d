@@ -1,0 +1,206 @@
+{
+  "name": "Chromatic Resonance E2E Tests",
+  "description": "Automated end-to-end tests for game functionality",
+  "baseUrl": "http://localhost:8081",
+
+  "testSuites": {
+    "initialization": {
+      "name": "Game Initialization",
+      "tests": [
+        {
+          "id": "init-001",
+          "name": "Game loads without errors",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "waitForSelector", "selector": "#game-canvas" },
+            { "action": "checkConsole", "level": "error", "expected": 0, "exclude": ["favicon"] }
+          ],
+          "expected": "Game canvas visible, no console errors"
+        },
+        {
+          "id": "init-002",
+          "name": "All systems initialize",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "waitForLog", "contains": "AI Dungeon Master 3D initialized" },
+            { "action": "checkLogs", "mustContain": [
+              "SceneManager initialized",
+              "RoomRenderer initialized",
+              "ColorSystem initialized",
+              "ExtractionSystem initialized",
+              "ParticleSystem initialized"
+            ]}
+          ],
+          "expected": "All system initialization logs present"
+        },
+        {
+          "id": "init-003",
+          "name": "HUD elements visible",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "waitForSelector", "selector": ".color-inventory" },
+            { "action": "checkVisible", "selectors": [
+              "#navigation-panel",
+              "#player-stats",
+              "#action-bar",
+              ".color-inventory",
+              "#painters-palette"
+            ]}
+          ],
+          "expected": "All HUD panels visible"
+        }
+      ]
+    },
+
+    "extraction": {
+      "name": "Color Extraction System",
+      "tests": [
+        {
+          "id": "extract-001",
+          "name": "Extraction zones cover full screen",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "wait", "ms": 1000 },
+            { "action": "checkExtractionCoverage", "minCoverage": 0.8 }
+          ],
+          "expected": "At least 80% of screen positions show extraction crosshair"
+        },
+        {
+          "id": "extract-002",
+          "name": "Tooltip shows correct color info",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "wait", "ms": 1000 },
+            { "action": "hoverCanvas", "xPct": 0.5, "yPct": 0.1 },
+            { "action": "checkTooltip", "hasFields": ["colorName", "extractPercent", "yieldValue"] }
+          ],
+          "expected": "Tooltip displays color name, extraction percentage, and yield"
+        },
+        {
+          "id": "extract-003",
+          "name": "Color changes based on position",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "wait", "ms": 1000 },
+            { "action": "compareTooltipColors", "positions": [
+              { "xPct": 0.1, "yPct": 0.1 },
+              { "xPct": 0.5, "yPct": 0.9 }
+            ]}
+          ],
+          "expected": "Different screen positions show different colors"
+        }
+      ]
+    },
+
+    "combat": {
+      "name": "Combat System",
+      "tests": [
+        {
+          "id": "combat-001",
+          "name": "Combat can be initiated",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "click", "selector": "button:has-text('Forward')" },
+            { "action": "waitForSelector", "selector": "#enemy-info:not(.hidden), .combat-messages" },
+            { "action": "checkVisible", "selectors": ["button:has-text('Attack'):not([disabled])"] }
+          ],
+          "expected": "Enemy appears, attack button enabled"
+        },
+        {
+          "id": "combat-002",
+          "name": "Attack deals damage",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "click", "selector": "button:has-text('Forward')" },
+            { "action": "wait", "ms": 500 },
+            { "action": "click", "selector": "button:has-text('Attack')" },
+            { "action": "waitForLog", "contains": "damage" }
+          ],
+          "expected": "Attack action logged with damage"
+        },
+        {
+          "id": "combat-003",
+          "name": "Room desaturates in combat",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "screenshot", "name": "before-combat" },
+            { "action": "click", "selector": "button:has-text('Forward')" },
+            { "action": "wait", "ms": 1000 },
+            { "action": "screenshot", "name": "during-combat" },
+            { "action": "compareImages", "image1": "before-combat", "image2": "during-combat", "expectDifferent": true }
+          ],
+          "expected": "Room appearance changes during combat"
+        }
+      ]
+    },
+
+    "navigation": {
+      "name": "Room Navigation",
+      "tests": [
+        {
+          "id": "nav-001",
+          "name": "Forward button navigates to new room",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "getText", "selector": "#room-name", "storeAs": "room1" },
+            { "action": "click", "selector": "button:has-text('Forward')" },
+            { "action": "wait", "ms": 1500 },
+            { "action": "getText", "selector": "#room-name", "storeAs": "room2" },
+            { "action": "assertNotEqual", "var1": "room1", "var2": "room2" }
+          ],
+          "expected": "Room name changes after navigation"
+        },
+        {
+          "id": "nav-002",
+          "name": "Back button returns to previous room",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "click", "selector": "button:has-text('Forward')" },
+            { "action": "wait", "ms": 1500 },
+            { "action": "click", "selector": "button:has-text('Back')" },
+            { "action": "wait", "ms": 1500 },
+            { "action": "checkText", "selector": "#room-name", "contains": "Crypt Entrance" }
+          ],
+          "expected": "Returns to starting room"
+        }
+      ]
+    },
+
+    "ui": {
+      "name": "UI Interactions",
+      "tests": [
+        {
+          "id": "ui-001",
+          "name": "Inventory panel opens with I key",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "pressKey", "key": "i" },
+            { "action": "checkVisible", "selectors": [".inventory-panel"] }
+          ],
+          "expected": "Inventory panel visible after pressing I"
+        },
+        {
+          "id": "ui-002",
+          "name": "Buttons remain clickable with pointer-events pass-through",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "checkClickable", "selectors": [
+              "button:has-text('Forward')",
+              "button:has-text('Back')"
+            ]}
+          ],
+          "expected": "Navigation buttons are clickable"
+        },
+        {
+          "id": "ui-003",
+          "name": "Color slots are clickable",
+          "steps": [
+            { "action": "navigate", "url": "/" },
+            { "action": "checkClickable", "selectors": [".color-slot"] }
+          ],
+          "expected": "Color inventory slots are clickable"
+        }
+      ]
+    }
+  }
+}

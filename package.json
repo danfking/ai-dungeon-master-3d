@@ -1,0 +1,55 @@
+{
+  "name": "ai-dungeon-master-3d",
+  "version": "0.1.0",
+  "description": "3D first-person dungeon crawler with watercolor art style",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "cd game && npx http-server . -p 8081 -c-1 --cors",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "keywords": [
+    "game",
+    "roguelike",
+    "dungeon",
+    "3d",
+    "threejs",
+    "watercolor",
+    "electron"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "build": {
+    "appId": "com.aidungeonmaster3d.app",
+    "productName": "AI Dungeon Master 3D",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "game/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "game/assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "game/assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "game/assets/icon.png"
+    }
+  }
+}

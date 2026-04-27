@@ -1,0 +1,12 @@
+# Test artifacts
+visual/baselines/
+visual/current/
+*.png
+!README.md
+
+# Test reports
+reports/
+*.html
+
+# Playwright artifacts
+.playwright-mcp/
