@@ -1,6 +1,6 @@
 # AI Dungeon Master 3D
 
-> A first-person watercolor dungeon crawler. Hand-painted backdrops, custom NPR shaders, turn-based combat, and a colour-extraction magic system.
+> A first-person watercolour dungeon crawler experiment. Hand-painted backdrops, custom NPR shaders, turn-based combat, and a colour-extraction magic system. Core loop working. Polish never landed.
 
 ![Status](https://img.shields.io/badge/status-experiment-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -68,14 +68,22 @@ This is where the project earns its keep as a portfolio piece.
 - **The agent could not evaluate "watercolour-ness".** Asking the agent "does this room look watercolour enough?" produced confident but useless answers. It could not reliably tell whether an output was off-style. Every meaningful direction came from me looking at the result and saying "more bleed, less saturation, smaller brush."
 - **Directional variants are exponential.** Each room needs four directional views (north/south/east/west). Eleven rooms ≈ forty-four backdrops. Maintaining style across a single room's four variants was harder than across different rooms, because the eye notices inconsistency between adjacent views immediately.
 - **Pipeline is more durable than prompts.** The prompts I ended up with are not the interesting artefact. The pipeline (ComfyUI configs, post-processing chain, asset structure conventions) is what makes the project repeatable. If I came back to this in a year, I'd discard the prompts and keep the pipeline.
+- **Knowing when to stop iterating is part of the finding.** The core mechanic answered its question early. Pushing for visual polish would have meant a second experiment, with a different agent loop tuned for aesthetic critique rather than feature build. I called the first experiment done rather than confuse the two.
 
 ## Status and what's next
 
-Playable proof of concept. Crypt Entrance, Ossuary, and Ritual Chamber rooms working. Full combat loop (attack, arcane bolt, heal, flee), HP/MP/XP, colour extraction, eleven enemies wired up. Not in active development. Ideas if I came back: more rooms, the boss fight, an inventory screen that fits the watercolour aesthetic.
+Rough proof of concept. The core mechanic loop works, combat, colour extraction from painted scenes, HP/MP/XP, and that was enough for me. I stopped iterating because the loop had answered the question I built it to answer. The polish pass never landed: the visual finish is uneven, the UI is placeholder in places, and the lich-lord boss fight isn't wired up. If I came back: a polish pass with the agent team, the missing rooms, and the boss encounter.
 
 ## Architecture
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the render pipeline, combat flow, asset pipeline conventions, and coding standards.
+
+## A note on history
+
+This repository was extracted from a private monorepo where I work on
+many side projects together. The single initial commit reflects the
+migration, not the development cadence; the work itself unfolded across
+many sessions.
 
 ## License
 
